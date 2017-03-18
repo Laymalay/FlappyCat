@@ -20,7 +20,6 @@ public abstract class State {
 
     }
     protected abstract void handleInput();
-
     public abstract void update(float dt) ;
     public abstract void render(SpriteBatch sb);//предоставляет текстуру для рисования фигур sprite batch
     public abstract void dispose();

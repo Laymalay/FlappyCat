@@ -8,20 +8,20 @@ import com.badlogic.gdx.math.Vector2;
  * Created by alinka on 7.3.17.
  */
 
-public class Rock extends Item {
-    @Override
-    public void effect(Bird bird) {
-        bird.setLife(bird.getLife()-1);
-    }
+public class Cake extends Item {
 
 
-    public Rock(Vector2 v){
+    public Cake(Vector2 v){
         super(v);
-        pos.x=0;
-        texture = new Texture("stone2.png");
+        texture = new Texture("Cake.png");
         bounds = new Rectangle(pos.x,pos.y,texture.getWidth(),texture.getHeight());
 
     }
 
+
+    @Override
+    public void effect(Bird bird) {
+        bird.set_jump(bird.get_jump()-50);
+    }
 
 }

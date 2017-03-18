@@ -85,6 +85,8 @@ public class Bird {
     public  void jump(){
         velosity.y= _jump;
     }
-
+    public  void jump(int x){
+        velosity.y= x;
+    }
 
 }
