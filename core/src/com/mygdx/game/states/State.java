@@ -1,14 +1,17 @@
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+
+import java.io.IOException;
 
 /**
  * Created by alinka on 26.2.17.
  */
 
-public abstract class State {
+public abstract class State extends Game{
     protected OrthographicCamera camera;
     protected Vector3 mouse;
     protected GameStateManager gsm;
@@ -20,7 +23,7 @@ public abstract class State {
 
     }
     protected abstract void handleInput();
-    public abstract void update(float dt) ;
+    public abstract void update(float dt) throws IOException, ClassNotFoundException;
     public abstract void render(SpriteBatch sb);//предоставляет текстуру для рисования фигур sprite batch
     public abstract void dispose();
 }

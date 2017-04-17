@@ -3,19 +3,19 @@ package com.mygdx.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.FlappyDemo;
+import com.mygdx.game.FlappyCat;
 
 /**
  * Created by alinka on 26.2.17.
  */
 
 public class MenuState extends State {
-  private Texture background;
+    private Texture background;
     private Texture playBtn;
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
-        background = new Texture("bg2.png");
+        background = new Texture("bg3.png");
         playBtn =new Texture("playbtn.png");
     }
 
@@ -34,9 +34,14 @@ public class MenuState extends State {
     @Override
     public void render(SpriteBatch sb) {
       sb.begin();
-      sb.draw(background,0,0, FlappyDemo.WIDTH,FlappyDemo.HEIGHT );
-      sb.draw(playBtn, (FlappyDemo.WIDTH/2 - playBtn.getWidth()/2),(FlappyDemo.HEIGHT/2));
+      sb.draw(background,0,0, FlappyCat.WIDTH,FlappyCat.HEIGHT );
+      sb.draw(playBtn, (FlappyCat.WIDTH/2 - playBtn.getWidth()/2),(FlappyCat.HEIGHT/2));
       sb.end();
+    }
+
+    @Override
+    public void create() {
+
     }
 
     @Override

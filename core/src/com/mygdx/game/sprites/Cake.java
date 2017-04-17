@@ -13,7 +13,7 @@ public class Cake extends Item {
 
     public Cake(Vector2 v){
         super(v);
-        texture = new Texture("Cake.png");
+        texture = new Texture("cake.png");
         bounds = new Rectangle(pos.x,pos.y,texture.getWidth(),texture.getHeight());
 
     }
@@ -21,7 +21,7 @@ public class Cake extends Item {
 
     @Override
     public void effect(Bird bird) {
-        bird.set_jump(bird.get_jump()-50);
+        bird.set_jump(bird.get_jump()-30);
     }
 
 }

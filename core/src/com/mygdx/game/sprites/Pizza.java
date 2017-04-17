@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Pizza extends Item {
     public Pizza(Vector2 v){
         super(v);
-        texture = new Texture("pizza1.png");
+        texture = new Texture("pizza.png");
         bounds = new Rectangle(pos.x,pos.y,texture.getWidth(),texture.getHeight());
 
     }

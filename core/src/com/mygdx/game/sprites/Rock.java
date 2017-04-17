@@ -18,7 +18,7 @@ public class Rock extends Item {
     public Rock(Vector2 v){
         super(v);
         pos.x=0;
-        texture = new Texture("stone2.png");
+        texture = new Texture("stone4.png");
         bounds = new Rectangle(pos.x,pos.y,texture.getWidth(),texture.getHeight());
 
     }

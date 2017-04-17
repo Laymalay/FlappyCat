@@ -14,7 +14,7 @@ public class Heart extends Item {
 
    public Heart(Vector2 v){
        super(v);
-       texture = new Texture("heart2.png");
+       texture = new Texture("heart5.png");
        bounds = new Rectangle(pos.x,pos.y,texture.getWidth(),texture.getHeight());
 
    }
@@ -23,6 +23,7 @@ public class Heart extends Item {
     @Override
     public void effect(Bird bird) {
         bird.setLife(bird.getLife()+1);
+        bird.setScore(5);
     }
 
 

@@ -14,6 +14,14 @@ public class Bird {
     private Vector3 position;
     private  Vector3 velosity;//вектор скорости
     private int life;
+    private  int Score=0;
+
+    public void setScore(int score) {
+        this.Score +=score;
+    }
+    public int getScore() {
+        return Score;
+    }
 
     public void setLife(int life) {
         if (life<=6){
@@ -45,7 +53,7 @@ public class Bird {
     public Bird (int x, int y){
         position = new Vector3(x,y,0);
         velosity = new Vector3(0,0,0);
-        bird =  new Texture("cat1.png");
+        bird =  new Texture("ani5.png");
         bounds = new Rectangle(x,y, bird.getWidth(),bird.getHeight());
         life=3;
         _jump=250;
@@ -89,4 +97,8 @@ public class Bird {
         velosity.y= x;
     }
 
+    public void dispose() {
+        bird.dispose();
+
+    }
 }
