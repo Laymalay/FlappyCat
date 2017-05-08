@@ -1,5 +1,7 @@
 package com.mygdx.game.states;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,21 +19,31 @@ class GameOver extends State {
     private Texture gameover;
     private BitmapFont font;
     private int _newscore;
+    private int _maxscore;
     private ButtonForStates menu_button;
     private Vector3 touchPos;
+    private Music lose,win;
 
-    GameOver(GameStateManager gsm, int newscore ) throws IOException, ClassNotFoundException {
+    GameOver(GameStateManager gsm, int newscore,int maxscore) throws IOException, ClassNotFoundException {
         super(gsm);
         background = new Texture("bg3.png");
         gameover = new Texture("gameover.png");
         camera.setToOrtho(false, Flyingblur.WIDTH/2, Flyingblur.HEIGHT/2);
         _newscore = newscore;
+        _maxscore = maxscore;
         font = new BitmapFont();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         font.getData().setScale(3);
         SaveScores(newscore);
         menu_button = new ButtonForStates(100,30,280,100);
         touchPos = new Vector3();
+        lose = Gdx.audio.newMusic(Gdx.files.internal("gameover.mp3"));
+        win = Gdx.audio.newMusic(Gdx.files.internal("win1.wav"));
+        if (_newscore > _maxscore ){
+           win.play();
+        }
+        else
+         lose.play();
 //        System.out.println("--------------");
 //        for (int i=0; i< scores.scorelist.size();i++){
 //            System.out.println(scores.scorelist.get(i));
@@ -76,7 +88,12 @@ class GameOver extends State {
         sb.begin();
         sb.draw(background,0,0, Flyingblur.WIDTH, Flyingblur.HEIGHT );
         sb.draw(gameover,70,400, 350,300);
-        font.draw(sb, " "+_newscore, 20,220);
+        if (_newscore > _maxscore ){
+            font.draw(sb, "NEW RECORD", 80,300);
+            font.draw(sb, "  "+_newscore, 80,240);
+        }
+        else
+            font.draw(sb, "Your score: "+_newscore, 80,240);
         menu_button.draw(sb);
         font.draw(sb,"menu",180,100);
         sb.end();
@@ -107,5 +124,7 @@ class GameOver extends State {
         background.dispose();
         gameover.dispose();
         font.dispose();
+        lose.dispose();
+        win.dispose();
     }
 }

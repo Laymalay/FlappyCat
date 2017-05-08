@@ -74,7 +74,7 @@ public class MediumPlay extends State {
                     item = new Heart(new Vector2(rand.nextInt(400),rand.nextInt(700)));
                     break;
                 case 4:
-                    item = new Monster(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
+                    item = new Heart(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
                     break;
                 case 5:
                     item = new Killer(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
@@ -140,7 +140,7 @@ public class MediumPlay extends State {
             oos2.flush();
             oos2.close();
 
-            gsm.set(new GameOver(gsm, blur.getScore()));
+            gsm.set(new GameOver(gsm, blur.getScore(), maxscore));
         }
 
         camera.update();
@@ -167,7 +167,7 @@ public class MediumPlay extends State {
         for (Crag  crag:crags) {
             crag.render(sb);
         }
-        sb.draw(blur.getBird(),blur.getPosition().x,blur.getPosition().y);
+        sb.draw(blur.getBlur(),blur.getPosition().x,blur.getPosition().y);
 //        sb.draw(ground, ground1.x, ground1.y);
 //        sb.draw(ground, ground2.x, ground2.y);
         sb.end();

@@ -68,22 +68,22 @@ public class EasyPlay extends State{
         for(int i =0 ;i <ITEM_COUNT;i++){
             switch (i){
                 case 0:
-                    item = new Heart(new Vector2(rand.nextInt(400),rand.nextInt(800)));
+                    item = new Heart(new Vector2(rand.nextInt(400),rand.nextInt(700)));
                     break;
                 case 1:
-                    item = new Cake(new Vector2(rand.nextInt(400),rand.nextInt(800))) ;
+                    item = new Cake(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
                     break;
                 case 2:
-                    item = new Donut(new Vector2(rand.nextInt(400),rand.nextInt(800))) ;
+                    item = new Donut(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
                     break;
                 case 3:
-                    item = new Heart(new Vector2(rand.nextInt(400),rand.nextInt(800)));
+                    item = new Heart(new Vector2(rand.nextInt(400),rand.nextInt(700)));
                     break;
                 case 4:
-                    item = new Cake(new Vector2(rand.nextInt(400),rand.nextInt(800))) ;
+                    item = new Cake(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
                     break;
                 case 5:
-                    item = new Donut(new Vector2(rand.nextInt(400),rand.nextInt(800))) ;
+                    item = new Donut(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
                     break;
             }
             items.add(item);
@@ -101,7 +101,6 @@ public class EasyPlay extends State{
     @Override
     public void update(float dt) throws IOException, ClassNotFoundException {
         handleInput();
-        UpdateGround();
         UpdateBG();
         blur.update(dt);
         camera.position.x=blur.getPosition().x+80;
@@ -115,7 +114,7 @@ public class EasyPlay extends State{
                     item.reposition(new Vector2(item.getPos().x+rock.getWidth(), item.getPos().y));
             }
             if(camera.position.x - (camera.viewportWidth/2) > item.getPos().x +
-                                    item.getTexture().getWidth()){
+                                    item.getWidth()){
                 item.reposition(new Vector2(item.getPos().x+400,rand.nextInt(360)));
             }
             if (item.collides(blur.getBounds())){
@@ -126,14 +125,13 @@ public class EasyPlay extends State{
         for (int i=0; i< rocks.size; i++){
             Rock rock = rocks.get(i);
             if(camera.position.x - (camera.viewportWidth/2) > rock.getPos().x +
-                    rock.getTexture().getWidth()){
+                    rock.getWidth()){
                 rock.reposition(new Vector2(rock.getPos().x+400,-30));
             }
             if(rock.collides(blur.getBounds())){
                 blur.move();
                 b=true;
                 break;
-//                rock.effect(bird);
             }
         }
 
@@ -147,7 +145,7 @@ public class EasyPlay extends State{
             oos2.flush();
             oos2.close();
 
-            gsm.set(new GameOver(gsm, blur.getScore()));
+            gsm.set(new GameOver(gsm, blur.getScore(),maxscore));
         }
 
         camera.update();
@@ -159,7 +157,6 @@ public class EasyPlay extends State{
         sb.begin();
         sb.draw(bg, bg1.x, bg1.y);
         sb.draw(bg, bg2.x, bg2.y);
-//        sb.draw(bg,camera.position.x - (camera.viewportWidth/2),0);
         font.draw(sb, " Score: "+(blur.getScore()),camera.position.x - (camera.viewportWidth/2),355);
         font.draw(sb, " MaxScore: "+ this.maxscore ,camera.position.x - (camera.viewportWidth/2)+130,355);
         for (int i=0;i<blur.getLife();i++){
@@ -174,17 +171,10 @@ public class EasyPlay extends State{
         for (Rock  rock:rocks) {
             rock.render(sb);
         }
-        sb.draw(blur.getBird(),blur.getPosition().x,blur.getPosition().y);
-//        sb.draw(ground, ground1.x, ground1.y);
-//        sb.draw(ground, ground2.x, ground2.y);
+        sb.draw(blur.getBlur(),blur.getPosition().x,blur.getPosition().y);
         sb.end();
     }
-    public void UpdateGround(){
-        if (camera.position.x - camera.viewportWidth/2 > ground1.x + ground.getWidth())
-            ground1.add(ground.getWidth()*2 ,0);
-        if (camera.position.x - camera.viewportWidth/2 > ground2.x + ground.getWidth())
-            ground2.add(ground.getWidth()*2 ,0);
-    }
+
     public void UpdateBG(){
         if (camera.position.x - camera.viewportWidth/2 > bg1.x + bg.getWidth())
             bg1.add(bg.getWidth()*2 ,0);

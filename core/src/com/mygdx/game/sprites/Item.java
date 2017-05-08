@@ -1,5 +1,6 @@
 package com.mygdx.game.sprites;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,6 +19,7 @@ public abstract  class Item   {
     protected Texture texture;
     protected Rectangle bounds;
     protected int width;
+    protected Sound sound;
     protected  int height;
     public Rectangle getBounds(){
         return  bounds;

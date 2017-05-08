@@ -1,6 +1,9 @@
 package com.mygdx.game.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -9,12 +12,15 @@ import com.badlogic.gdx.math.Vector3;
  */
 
 public class Blur {
-    private int movement;
+    public int movement;
     private int gravity;
     private Vector3 position;
     private  Vector3 velosity;//вектор скорости
     private int life;
     private  int Score=0;
+    private Animation blurAnimation;
+    private Texture blur;
+    private Sound flap;
 
     public void setScore(int score) {
         this.Score +=score;
@@ -29,7 +35,7 @@ public class Blur {
     }
 
     public void setLife(int life) {
-        if (life<=6){
+        if (life<=9){
         this.life = life;}
         if (life<0){
             this.life=0;
@@ -53,28 +59,29 @@ public class Blur {
     private int _jump;
     private Rectangle bounds;
 
-    transient private Texture blur =  new Texture("ani5.png");;
-
     public Blur(int x, int y, int _movement, int _gravity){
         gravity = _gravity;
         movement = _movement;
         position = new Vector3(x,y,0);
         velosity = new Vector3(0,0,0);
-
-        bounds = new Rectangle(x,y, blur.getWidth(),blur.getHeight());
-        life=3;
+        blur =  new Texture("ani.png");
+        blurAnimation = new Animation(new TextureRegion(blur), 3, 0.5f);
+        bounds = new Rectangle(x, y, blur.getWidth() /3, blur.getHeight());
+        life=9;
         _jump=250;
+        flap = Gdx.audio.newSound(Gdx.files.internal("up3.wav"));
+    }
+    public TextureRegion getBlur() {
+        return blurAnimation.getFrame();
     }
 
     public Vector3 getPosition() {
         return position;
     }
 
-    public Texture getBird() {
-        return blur;
-    }
 
     public void update(float dt){
+        blurAnimation.update(dt);
         if(position.y>0)
             velosity.add(0, gravity,0);// добавляет значение к вектору (конст гравити к коорд y)
         velosity.scl(dt);// умнож вектор скорости на скаляр промежутка времени
@@ -98,6 +105,7 @@ public class Blur {
 
 
     public  void jump(){
+        flap.play();
         velosity.y= _jump;
     }
     public  void jump(int x){
@@ -106,6 +114,7 @@ public class Blur {
     public  void move(){ position.x +=200;}
     public void dispose() {
         blur.dispose();
+        flap.dispose();
 
     }
 }

@@ -1,5 +1,6 @@
 package com.mygdx.game.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -15,13 +16,15 @@ public class Donut extends Item {
         width = 50;
         height = 50;
         bounds = new Rectangle(pos.x,pos.y,width,height);
+        sound =  Gdx.audio.newSound(Gdx.files.internal("kill.wav"));
     }
 
 
     @Override
     public void effect(Blur blur) {
         blur.set_jump(blur.get_jump()-30);
-        blur.setScore(10);
+        blur.setScore(15);
+        sound.play();
     }
 
 }

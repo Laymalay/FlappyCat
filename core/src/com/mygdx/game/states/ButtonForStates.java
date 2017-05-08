@@ -1,5 +1,7 @@
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,6 +19,7 @@ public class ButtonForStates{
     public boolean is_pressed = false;
     public boolean was_pressed = false;
     private float _x,_y, _width,_height;
+    private Sound sound;
 
     public ButtonForStates(float x, float y, float width, float height) {
         button_pressed_texture = new Texture("buttonpress.png");
@@ -28,6 +31,7 @@ public class ButtonForStates{
         _y=y;
         _width = width;
         _height = height;
+        sound =  Gdx.audio.newSound(Gdx.files.internal("button.mp3"));
     }
 
 
@@ -54,8 +58,10 @@ public class ButtonForStates{
         button_unpressed_texture.dispose();
     }
     public boolean Activated(){
-        if (!is_pressed && was_pressed)
+        if (!is_pressed && was_pressed) {
+            sound.play();
             return true;
+        }
         else
             return false;
     }

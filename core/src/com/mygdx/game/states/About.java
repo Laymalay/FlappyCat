@@ -27,7 +27,7 @@ public class About extends State{
         camera.setToOrtho(false, Flyingblur.WIDTH/2, Flyingblur.HEIGHT/2);
         font = new BitmapFont();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        font.getData().setScale(3);
+        font.getData().setScale(2);
 //        System.out.println("--------------");
 //        for (int i=0; i< scores.scorelist.size();i++){
 //            System.out.println(scores.scorelist.get(i));
@@ -53,8 +53,13 @@ public class About extends State{
     public void render(SpriteBatch sb) {
         sb = new SpriteBatch();
         sb.begin();
-        sb.draw(background,0,0, Flyingblur.WIDTH, Flyingblur.HEIGHT );
-        font.draw(sb,"ABOUT",100,100);
+        sb.draw(background,0,0, Flyingblur.WIDTH, Flyingblur.HEIGHT);
+        font.setColor(0f,10f,243f,344f);
+        font.draw(sb,"Tap to screen to fly",100,700);
+        font.draw(sb,"Kill monsters",100,600);
+        font.draw(sb,"Have fun!",100,500);
+        font.setColor(0f,100f,243f,344f);
+        font.draw(sb,"Autor: Alina Zhukovskaya",100,400);
         sb.end();
     }
 

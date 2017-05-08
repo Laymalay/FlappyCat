@@ -66,17 +66,23 @@ public class HardPlay  extends State{
         for(int i =0 ;i <ITEM_COUNT;i++){
             switch (i){
                 case 0 :
-                    item = new Heart(new Vector2(10*i,i*20));
+                    item = new Heart(new Vector2(rand.nextInt(400),rand.nextInt(700)));
                     break;
                 case 1:
-                    item = new Cake(new Vector2(12*i,i*10)) ;
+                    item = new IceMonster(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
                     break;
                 case 2:
-                    item = new IceMonster(new Vector2(14*i,i*30));
+                    item = new Zombie(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
                     break;
-                case 3:
-                    item = new Zombie(new Vector2(14*i,i*30));
-
+                case 3 :
+                    item = new Heart(new Vector2(rand.nextInt(400),rand.nextInt(700)));
+                    break;
+                case 4:
+                    item = new Heart(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
+                    break;
+                case 5:
+                    item = new IceMonster(new Vector2(rand.nextInt(400),rand.nextInt(700))) ;
+                    break;
             }
             items.add(item);
 
@@ -151,7 +157,7 @@ public class HardPlay  extends State{
             b =true;
         }
         if (b){
-            gsm.set(new GameOver(gsm, blur.getScore()));
+            gsm.set(new GameOver(gsm, blur.getScore(), maxscore));
         }
 
         camera.update();
@@ -176,7 +182,7 @@ public class HardPlay  extends State{
         for (IceStone  stone:stones) {
             stone.render(sb);
         }
-        sb.draw(blur.getBird(),blur.getPosition().x,blur.getPosition().y);
+        sb.draw(blur.getBlur(),blur.getPosition().x,blur.getPosition().y);
         sb.draw(ground, ground1.x, ground1.y);
         sb.draw(ground, ground2.x, ground2.y);
         sb.end();
