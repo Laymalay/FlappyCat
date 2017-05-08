@@ -15,15 +15,17 @@ public class Heart extends Item {
    public Heart(Vector2 v){
        super(v);
        texture = new Texture("heart5.png");
-       bounds = new Rectangle(pos.x,pos.y,texture.getWidth(),texture.getHeight());
-
+       width = 50;
+       height = 50;
+       bounds = new Rectangle(pos.x,pos.y,width,height);
    }
 
 
     @Override
-    public void effect(Bird bird) {
-        bird.setLife(bird.getLife()+1);
-        bird.setScore(5);
+    public void effect(Blur blur) {
+        blur.setLife(blur.getLife()+1);
+        blur.setScore(5);
+        blur.set_jump(blur.get_jump()+30);
     }
 
 

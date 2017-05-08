@@ -11,20 +11,25 @@ import java.util.Random;
  * Created by alinka on 7.3.17.
  */
 
-public abstract  class Item  {
+public abstract  class Item   {
 
 
     protected Vector2 pos;
     protected Texture texture;
     protected Rectangle bounds;
-
-
+    protected int width;
+    protected  int height;
+    public Rectangle getBounds(){
+        return  bounds;
+    }
     public Vector2 getPos() {
         return pos;
     }
+    public void setPos (Vector2 v){pos=v;}
 
-
-
+    public int getWidth(){
+        return width;
+    }
     public  Item(Vector2 v) {
         pos = new Vector2(v);
 
@@ -32,7 +37,7 @@ public abstract  class Item  {
 
 
     public void render (SpriteBatch sb){
-        sb.draw(this.texture,this.getPos().x,this.getPos().y);
+        sb.draw(this.texture,this.getPos().x,this.getPos().y,this.width,this.height);
     }
 
     public void dispose (){
@@ -44,7 +49,7 @@ public abstract  class Item  {
     public  boolean collides(Rectangle player){
         return player.overlaps(bounds);
     }
-    public abstract void effect(Bird bird);
+    public abstract void effect(Blur blur);
 
 
     public void reposition (Vector2 v){

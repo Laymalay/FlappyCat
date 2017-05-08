@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.Vector3;
  * Created by alinka on 26.2.17.
  */
 
-public class Bird {
-    private static final int MOVEMENT=100;
-    private static final int GRAVITY= -15;
+public class Blur {
+    private int movement;
+    private int gravity;
     private Vector3 position;
     private  Vector3 velosity;//вектор скорости
     private int life;
@@ -19,6 +19,11 @@ public class Bird {
     public void setScore(int score) {
         this.Score +=score;
     }
+
+    public void setPosition(Vector3 position) {
+        this.position = position;
+    }
+
     public int getScore() {
         return Score;
     }
@@ -48,13 +53,15 @@ public class Bird {
     private int _jump;
     private Rectangle bounds;
 
-    private Texture bird;
+    transient private Texture blur =  new Texture("ani5.png");;
 
-    public Bird (int x, int y){
+    public Blur(int x, int y, int _movement, int _gravity){
+        gravity = _gravity;
+        movement = _movement;
         position = new Vector3(x,y,0);
         velosity = new Vector3(0,0,0);
-        bird =  new Texture("ani5.png");
-        bounds = new Rectangle(x,y, bird.getWidth(),bird.getHeight());
+
+        bounds = new Rectangle(x,y, blur.getWidth(),blur.getHeight());
         life=3;
         _jump=250;
     }
@@ -64,14 +71,14 @@ public class Bird {
     }
 
     public Texture getBird() {
-        return bird;
+        return blur;
     }
 
     public void update(float dt){
-        if(position.y>0)//??????????????????????????????
-            velosity.add(0,GRAVITY,0);// добавляет значение к вектору (конст гравити к коорд y)
+        if(position.y>0)
+            velosity.add(0, gravity,0);// добавляет значение к вектору (конст гравити к коорд y)
         velosity.scl(dt);// умнож вектор скорости на скаляр промежутка времени
-        position.add(MOVEMENT*dt,velosity.y,0);
+        position.add(movement *dt,velosity.y,0);
         if(position.y<0){
             position.y= 0;
         }
@@ -96,9 +103,9 @@ public class Bird {
     public  void jump(int x){
         velosity.y= x;
     }
-
+    public  void move(){ position.x +=200;}
     public void dispose() {
-        bird.dispose();
+        blur.dispose();
 
     }
 }

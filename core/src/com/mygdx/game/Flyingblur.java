@@ -10,7 +10,7 @@ import com.mygdx.game.states.MenuState;
 
 import java.io.IOException;
 
-public class FlappyCat extends ApplicationAdapter {
+public class Flyingblur extends ApplicationAdapter {
 	public static final int WIDTH=480;
 	public static final int HEIGHT=800;
 	public static final String TITLE="Flappy Bird";
@@ -24,8 +24,14 @@ public class FlappyCat extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		gsm = new GameStateManager();
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		gsm.push(new MenuState(gsm));
+		Gdx.gl.glClearColor(255, 255, 255, 255);
+		try {
+			gsm.push(new MenuState(gsm));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -37,8 +43,14 @@ public class FlappyCat extends ApplicationAdapter {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		gsm.render(batch);//отрисовывает верхний экран в стеке
+		try {
+			gsm.render(batch);//отрисовывает верхний экран в стеке
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

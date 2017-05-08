@@ -5,25 +5,26 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Created by alinka on 7.3.17.
+ * Created by alinka on 7.5.17.
  */
 
-public class Cake extends Item {
+public class Monster extends Item {
 
 
-    public Cake(Vector2 v){
+    public Monster(Vector2 v){
         super(v);
-        texture = new Texture("cake.png");
-        width = 40;
-        height = 50;
+        texture = new Texture("ship.png");
+        width = 100;
+        height = 60;
         bounds = new Rectangle(pos.x,pos.y,width,height);
     }
 
 
     @Override
     public void effect(Blur blur) {
-        blur.set_jump(blur.get_jump()-30);
-        blur.setScore(20);
+        blur.setLife(blur.getLife()-3);
+        blur.setScore(3);
     }
 
 }
+

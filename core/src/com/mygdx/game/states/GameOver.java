@@ -2,93 +2,110 @@ package com.mygdx.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Json;
-import com.mygdx.game.FlappyCat;
+import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.Flyingblur;
 import java.io.*;
 import java.util.*;
 /**
  * Created by alinka on 26.2.17.
  */
-class ScoreList implements Serializable {
-    ArrayList<Integer> scorelist = new ArrayList<Integer>();
 
-    public void add(int newscore) {
-        scorelist.add(newscore);
 
-    }
-    public int pop(int i){
-        return scorelist.get(i);
-    }
-}
 class GameOver extends State {
     private Texture background;
     private Texture gameover;
     private BitmapFont font;
-    private  ArrayList<Integer> scores;
+    private int _newscore;
+    private ButtonForStates menu_button;
+    private Vector3 touchPos;
 
-    GameOver(GameStateManager gsm, int newscore) throws IOException, ClassNotFoundException {
+    GameOver(GameStateManager gsm, int newscore ) throws IOException, ClassNotFoundException {
         super(gsm);
-//        background = new Texture("bg3.png");
-        gameover = new Texture("bg3.png");
-        scores = UpdateScore(newscore);
-
-
+        background = new Texture("bg3.png");
+        gameover = new Texture("gameover.png");
+        camera.setToOrtho(false, Flyingblur.WIDTH/2, Flyingblur.HEIGHT/2);
+        _newscore = newscore;
+        font = new BitmapFont();
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        font.getData().setScale(3);
+        SaveScores(newscore);
+        menu_button = new ButtonForStates(100,30,280,100);
+        touchPos = new Vector3();
+//        System.out.println("--------------");
+//        for (int i=0; i< scores.scorelist.size();i++){
+//            System.out.println(scores.scorelist.get(i));
+//        }
     }
 
-    protected ArrayList<Integer> UpdateScore(int score)throws IOException, ClassNotFoundException{
+//    protected Vector3 loadbirdPosition() throws IOException, ClassNotFoundException {
+//        File file = new File("position.out");
+//        FileInputStream fis= new FileInputStream(file);
+//        if (file.length() != 0){
+//            ObjectInputStream oin = new ObjectInputStream(fis);
+//            Vector3 vector3 = (Vector3) oin.readObject();
+//            oin.close();
+//            return  vector3;
+//        }
+//        return null;
+//    }
+    @Override
+    protected void handleInput() throws IOException, ClassNotFoundException {
+        if(menu_button.Activated())
+            gsm.set(new MenuState(gsm));
+    }
+
+    @Override
+    public void update(float dt) throws IOException, ClassNotFoundException {
+        handleInput();
+        camera.update();
+    }
+
+    @Override
+    public void render(SpriteBatch sb) {
+        if (Gdx.input.isTouched()) {
+            touchPos.set(Gdx.input.getX(), Flyingblur.HEIGHT - Gdx.input.getY(), 0);
+            if (menu_button.checkIfClicked(touchPos.x, touchPos.y)) {
+                menu_button.is_pressed = true;
+                menu_button.was_pressed = true;
+            }
+        }
+        else menu_button.is_pressed=false;
+        menu_button.UpdateTexture();
+        sb = new SpriteBatch();
+        sb.begin();
+        sb.draw(background,0,0, Flyingblur.WIDTH, Flyingblur.HEIGHT );
+        sb.draw(gameover,70,400, 350,300);
+        font.draw(sb, " "+_newscore, 20,220);
+        menu_button.draw(sb);
+        font.draw(sb,"menu",180,100);
+        sb.end();
+    }
+
+    protected void SaveScores(int score)throws IOException, ClassNotFoundException{
         File file = new File("score.out");
         if (!file.exists()){
             file.createNewFile();
         }
 
-        ObjectInputStream oin = new ObjectInputStream(new FileInputStream(file));
-        ArrayList<Integer> list = (ArrayList<Integer>) oin.readObject();
-        oin.close();
+        ScoreList list = new ScoreList();
+        FileInputStream fis= new FileInputStream(file);
+        if (file.length() != 0){
+            ObjectInputStream oin = new ObjectInputStream(fis);
+            list = (ScoreList) oin.readObject();
+            oin.close();
+        }
         list.add(score);
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
         oos.writeObject(list);
         oos.flush();
         oos.close();
-        return list;
-    }
-
-    @Override
-    protected void handleInput() {
-        if (Gdx.input.justTouched()){
-            gsm.set(new PlayState(gsm));
-        }
-    }
-
-    @Override
-    public void update(float dt) {
-        handleInput();
-    }
-
-    @Override
-    public void render(SpriteBatch sb) {
-
-        sb.begin();
-//        sb.draw(background,0,0);
-          sb.draw(gameover,camera.position.x ,camera.position.y);
-//        sb.draw(gameover, camera.position.x - gameover.getWidth()/2,camera.position.y);
-        font = new BitmapFont();
-        for (int i=0; i< scores.size();i++){
-            font.draw(sb, " " + scores.get(i) ,camera.position.x ,camera.position.y);
-        }
-
-        sb.end();
-    }
-
-    @Override
-    public void create() {
-
     }
 
     @Override
     public void dispose() {
-//        background.dispose();
+        background.dispose();
         gameover.dispose();
+        font.dispose();
     }
 }

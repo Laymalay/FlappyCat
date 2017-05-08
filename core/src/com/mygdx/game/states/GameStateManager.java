@@ -28,10 +28,10 @@ public class GameStateManager {
         states.pop().dispose();
         states.push(state);
     }
-    public  void  update(float dt) throws IOException, ClassNotFoundException {//через промежутки времени дельта обновляет
+    public  void  update(float dt) throws IOException, ClassNotFoundException, InterruptedException {//через промежутки времени дельта обновляет
         states.peek().update(dt);// peek - возвращает верхний эл не удал его при этом
     }
-    public void render (SpriteBatch sb){
+    public void render (SpriteBatch sb) throws InterruptedException {
         states.peek().render(sb);
     }
 }
