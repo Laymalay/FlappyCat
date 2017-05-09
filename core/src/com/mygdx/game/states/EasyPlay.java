@@ -40,7 +40,7 @@ public class EasyPlay extends State{
 
 
 
-    public EasyPlay(GameStateManager gsm, int newmaxscore, Vector3 position) {
+    public EasyPlay(GameStateManager gsm, int newmaxscore) {
         super(gsm);
         blur = new Blur(50,300,100,-15);
 //       if (position!=null){
@@ -139,12 +139,6 @@ public class EasyPlay extends State{
             b =true;
         }
         if (b){
-
-            ObjectOutputStream oos2 = new ObjectOutputStream(new FileOutputStream("position.out"));
-            oos2.writeObject(blur.getPosition());
-            oos2.flush();
-            oos2.close();
-
             gsm.set(new GameOver(gsm, blur.getScore(),maxscore));
         }
 

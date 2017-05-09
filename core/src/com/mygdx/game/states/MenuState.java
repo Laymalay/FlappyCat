@@ -1,48 +1,64 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.Flyingblur;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
+import com.sun.org.apache.xalan.internal.xsltc.dom.SimpleResultTreeImpl;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Node;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Created by alinka on 26.2.17.
  */
 
+class Player implements Serializable{
+    public int score;
+    public String name;
+    public Player(String _name, int _score){
+        name = _name;
+        score = _score;
+    }
+}
 class ScoreList implements Serializable {
-    ArrayList<Integer> scorelist;
+    ArrayList<Player> scorelist;
     public ScoreList(){
-        scorelist = new ArrayList<Integer>();
+        scorelist = new ArrayList<Player>();
     }
 
-
-    public void add(int newscore) {
-        scorelist.add(newscore);
-
+    public void add(int newscore, String name) {
+        scorelist.add(new Player(name, newscore));
     }
-    public int getmax(){
-        int max =0;
+
+    public Player getmax(){
+        Player max = new Player(" ",0);
         for (int i = 0; i< scorelist.size(); i++){
-            if (scorelist.get(i)>max){
+            if (scorelist.get(i).score>max.score){
                 max = scorelist.get(i);
             }
         }
         return max;
     }
 }
-
 
 public class MenuState extends State {
     private Texture background;
@@ -51,10 +67,8 @@ public class MenuState extends State {
     private ButtonForStates hard_button;
     private ButtonForStates about_button;
     private Vector3 touchPos;
-
     protected ScoreList scores;
     private int maxscore;
-
     private BitmapFont font;
 
 
@@ -71,7 +85,9 @@ public class MenuState extends State {
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         font.getData().setScale(3);
         scores = LoadScores();
-        maxscore = scores.getmax();
+        maxscore = scores.getmax().score;
+
+
     }
 
 
@@ -79,13 +95,13 @@ public class MenuState extends State {
     @Override
     protected void handleInput() {
         if(easy_button.Activated())
-           gsm.set(new EasyPlay(gsm, maxscore, null));
+           gsm.set(new EasyPlay(gsm, maxscore));
         if(medium_button.Activated())
-            gsm.set(new MediumPlay(gsm, maxscore, null));
+            gsm.set(new MediumPlay(gsm, maxscore));
         if(hard_button.Activated())
-            gsm.set(new HardPlay(gsm, maxscore, null));
+            gsm.set(new HardPlay(gsm, maxscore));
         if(about_button.Activated())
-            gsm.set(new About(gsm));
+            gsm.set(new About(gsm, scores));
 
     }
 
@@ -93,6 +109,7 @@ public class MenuState extends State {
     public void update(float dt) throws InterruptedException {
         handleInput();
         camera.update();
+
     }
 
     @Override
@@ -136,25 +153,22 @@ public class MenuState extends State {
       font.draw(sb,"easy",180,700);
       font.draw(sb,"medium",170,500);
       font.draw(sb,"hard",180,300);
-      font.draw(sb,"about",180,100);
+      font.draw(sb,"champion",160,100);
       sb.end();
     }
 
 
     public ScoreList LoadScores()throws IOException, ClassNotFoundException{
-        File file = new File("score.out");
-        if (!file.exists()){
-            file.createNewFile();
-        }
-
+        FileHandle file = Gdx.files.local("score.out");
         ScoreList list = new ScoreList();
-        FileInputStream fis= new FileInputStream(file);
+        InputStream is = file.read();
         if (file.length() != 0){
-            ObjectInputStream oin = new ObjectInputStream(fis);
+            ObjectInputStream oin = new ObjectInputStream(is);
             list = (ScoreList) oin.readObject();
             oin.close();
         }
         return list;
+
     }
 
     @Override

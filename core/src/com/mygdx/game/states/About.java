@@ -1,6 +1,7 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,28 +20,29 @@ import java.io.ObjectOutputStream;
  */
 
 public class About extends State{
-    private Texture background;
+    private Texture background, cup;
     private BitmapFont font;
-    About(GameStateManager gsm) {
+    private ScoreList scores;
+    private Vector3 touchPos;
+    private ButtonForStates menu_button;
+    About(GameStateManager gsm, ScoreList _scores) {
         super(gsm);
+        scores = _scores;
         background = new Texture("bg3.png");
         camera.setToOrtho(false, Flyingblur.WIDTH/2, Flyingblur.HEIGHT/2);
         font = new BitmapFont();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        font.getData().setScale(2);
-//        System.out.println("--------------");
-//        for (int i=0; i< scores.scorelist.size();i++){
-//            System.out.println(scores.scorelist.get(i));
-//        }
+        cup = new Texture("cup.png");
+        menu_button = new ButtonForStates(100, 100, 280, 100);
+        touchPos = new Vector3();
     }
 
 
 
     @Override
     protected void handleInput() throws IOException, ClassNotFoundException {
-        if (Gdx.input.justTouched()){
+        if(menu_button.Activated())
             gsm.set(new MenuState(gsm));
-        }
     }
 
     @Override
@@ -51,15 +53,29 @@ public class About extends State{
 
     @Override
     public void render(SpriteBatch sb) {
+        if (Gdx.input.isTouched()) {
+            touchPos.set(Gdx.input.getX(), Flyingblur.HEIGHT - Gdx.input.getY(), 0);
+            if (menu_button.checkIfClicked(touchPos.x, touchPos.y)) {
+                menu_button.is_pressed = true;
+                menu_button.was_pressed = true;
+            }
+        }
+        else menu_button.is_pressed=false;
+        menu_button.UpdateTexture();
         sb = new SpriteBatch();
         sb.begin();
         sb.draw(background,0,0, Flyingblur.WIDTH, Flyingblur.HEIGHT);
-        font.setColor(0f,10f,243f,344f);
-        font.draw(sb,"Tap to screen to fly",100,700);
-        font.draw(sb,"Kill monsters",100,600);
-        font.draw(sb,"Have fun!",100,500);
-        font.setColor(0f,100f,243f,344f);
-        font.draw(sb,"Autor: Alina Zhukovskaya",100,400);
+        sb.draw(cup, 0 , 200 , 480,600);
+        font.setColor(Color.BLACK);
+        font.getData().setScale(2);
+        font.draw(sb," "+scores.getmax().name,180,310);
+        font.draw(sb," "+ scores.getmax().score ,180,280);
+        font.setColor(Color.WHITE);
+        font.getData().setScale(2);
+        font.draw(sb,"Author: Alina Zhukovskaya",60,70);
+        menu_button.draw(sb);
+        font.getData().setScale(3);
+        font.draw(sb,"menu",180,170);
         sb.end();
     }
 

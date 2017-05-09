@@ -42,7 +42,7 @@ public class HardPlay  extends State{
 
 
 
-    public HardPlay(GameStateManager gsm, int newmaxscore, Vector3 position) {
+    public HardPlay(GameStateManager gsm, int newmaxscore) {
         super(gsm);
         blur = new Blur(50,300,160,-20);
         camera.setToOrtho(false, Flyingblur.WIDTH/2, Flyingblur.HEIGHT/2);

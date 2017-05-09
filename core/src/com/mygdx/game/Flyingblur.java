@@ -2,15 +2,24 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.states.GameStateManager;
 import com.mygdx.game.states.MenuState;
-
 import java.io.IOException;
 
+class MyTextInputListener implements Input.TextInputListener {
+	public String name = null;
+	@Override
+	public void input (String text) {
+        name = text;
+	}
+	@Override
+	public void canceled () {
+	}
+}
 public class Flyingblur extends ApplicationAdapter {
 	public static final int WIDTH=480;
 	public static final int HEIGHT=800;
@@ -18,7 +27,8 @@ public class Flyingblur extends ApplicationAdapter {
 	private GameStateManager gsm;
 	private  SpriteBatch batch;
 	private Music music;
-
+	public MyTextInputListener listener;
+	public static String pLayer_name;
 	
 	@Override
 	public void create () {
@@ -26,20 +36,24 @@ public class Flyingblur extends ApplicationAdapter {
 		gsm = new GameStateManager();
 		music = Gdx.audio.newMusic(Gdx.files.internal("music.wav"));
 		music.setLooping(true);
-		music.setVolume(0.1f);
-		music.play();
+		music.setVolume(0.5f);
+		listener = new  MyTextInputListener();
+		Gdx.input.getTextInput(listener, "Enter your name", "name", "");
 		Gdx.gl.glClearColor(255, 255, 255, 255);
+        music.play();
 		try {
 			gsm.push(new MenuState(gsm));
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	@Override
 	public void render () {
+        if (listener.name!=null){
+            pLayer_name = listener.name;
+        }
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		try {
 			gsm.update(Gdx.graphics.getRawDeltaTime());//возвр время между посл и текущим кадром в сек

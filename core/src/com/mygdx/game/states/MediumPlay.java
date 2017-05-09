@@ -37,7 +37,7 @@ public class MediumPlay extends State {
 
 
 
-    public MediumPlay(GameStateManager gsm, int newmaxscore, Vector3 position) {
+    public MediumPlay(GameStateManager gsm, int newmaxscore) {
         super(gsm);
         blur = new Blur(50,300,120,-17);
         camera.setToOrtho(false, Flyingblur.WIDTH/2, Flyingblur.HEIGHT/2);
@@ -135,10 +135,6 @@ public class MediumPlay extends State {
         }
         if (b){
 
-            ObjectOutputStream oos2 = new ObjectOutputStream(new FileOutputStream("position.out"));
-            oos2.writeObject(blur.getPosition());
-            oos2.flush();
-            oos2.close();
 
             gsm.set(new GameOver(gsm, blur.getScore(), maxscore));
         }

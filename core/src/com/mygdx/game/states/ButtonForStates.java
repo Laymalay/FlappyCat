@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
 public class ButtonForStates{
-
     private Sprite skin;
     private Texture button_pressed_texture;
     private Texture button_unpressed_texture;
