@@ -8,12 +8,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Flyingblur;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by alinka on 5.5.17.
@@ -40,13 +44,13 @@ public class About extends State{
 
 
     @Override
-    protected void handleInput() throws IOException, ClassNotFoundException {
+    protected void handleInput() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeyException, XmlPullParserException {
         if(menu_button.Activated())
             gsm.set(new MenuState(gsm));
     }
 
     @Override
-    public void update(float dt) throws IOException, ClassNotFoundException {
+    public void update(float dt) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeyException, XmlPullParserException {
         handleInput();
         camera.update();
     }

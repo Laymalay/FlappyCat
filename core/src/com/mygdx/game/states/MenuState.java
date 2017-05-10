@@ -1,64 +1,22 @@
 package com.mygdx.game.states;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.Flyingblur;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
-import com.sun.org.apache.xalan.internal.xsltc.dom.SimpleResultTreeImpl;
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Node;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by alinka on 26.2.17.
  */
-
-class Player implements Serializable{
-    public int score;
-    public String name;
-    public Player(String _name, int _score){
-        name = _name;
-        score = _score;
-    }
-}
-class ScoreList implements Serializable {
-    ArrayList<Player> scorelist;
-    public ScoreList(){
-        scorelist = new ArrayList<Player>();
-    }
-
-    public void add(int newscore, String name) {
-        scorelist.add(new Player(name, newscore));
-    }
-
-    public Player getmax(){
-        Player max = new Player(" ",0);
-        for (int i = 0; i< scorelist.size(); i++){
-            if (scorelist.get(i).score>max.score){
-                max = scorelist.get(i);
-            }
-        }
-        return max;
-    }
-}
 
 public class MenuState extends State {
     private Texture background;
@@ -70,9 +28,10 @@ public class MenuState extends State {
     protected ScoreList scores;
     private int maxscore;
     private BitmapFont font;
+    private GetObject getter_scores;
 
 
-    public MenuState(GameStateManager gsm) throws IOException, ClassNotFoundException {
+    public MenuState(GameStateManager gsm) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeyException, XmlPullParserException {
         super(gsm);
         camera = new OrthographicCamera();
         background = new Texture("bg3.png");
@@ -84,13 +43,11 @@ public class MenuState extends State {
         font = new BitmapFont();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         font.getData().setScale(3);
-        scores = LoadScores();
+//        scores = LoadScores();
+        getter_scores = new GetObject();
+        scores = getter_scores.get();
         maxscore = scores.getmax().score;
-
-
     }
-
-
 
     @Override
     protected void handleInput() {
@@ -168,8 +125,9 @@ public class MenuState extends State {
             oin.close();
         }
         return list;
-
     }
+
+
 
     @Override
     public void dispose(){

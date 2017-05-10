@@ -18,9 +18,13 @@ import com.mygdx.game.sprites.Item;
 import com.mygdx.game.sprites.Rock;
 import com.mygdx.game.sprites.Zombie;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 /**
@@ -97,7 +101,7 @@ public class HardPlay  extends State{
     }
 
     @Override
-    public void update(float dt) throws IOException, ClassNotFoundException {
+    public void update(float dt) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeyException, XmlPullParserException {
         handleInput();
         UpdateGround();
         blur.update(dt);

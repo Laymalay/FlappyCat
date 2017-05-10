@@ -14,10 +14,15 @@ import com.mygdx.game.sprites.Cake;
 import com.mygdx.game.sprites.Donut;
 import com.mygdx.game.sprites.Item;
 import com.mygdx.game.sprites.Rock;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 /**
@@ -43,9 +48,6 @@ public class EasyPlay extends State{
     public EasyPlay(GameStateManager gsm, int newmaxscore) {
         super(gsm);
         blur = new Blur(50,300,100,-15);
-//       if (position!=null){
-//           bird.setPosition(position);
-//       }
         camera.setToOrtho(false, Flyingblur.WIDTH/2, Flyingblur.HEIGHT/2);
         maxscore = newmaxscore;
         bg =  new Texture("bg3.png");
@@ -99,9 +101,9 @@ public class EasyPlay extends State{
     }
 
     @Override
-    public void update(float dt) throws IOException, ClassNotFoundException {
+    public void update(float dt) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeyException, XmlPullParserException {
         handleInput();
-        UpdateBG();
+
         blur.update(dt);
         camera.position.x=blur.getPosition().x+80;
         boolean b = false;

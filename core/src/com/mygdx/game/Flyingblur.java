@@ -8,7 +8,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.states.GameStateManager;
 import com.mygdx.game.states.MenuState;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 class MyTextInputListener implements Input.TextInputListener {
 	public String name = null;
@@ -63,9 +68,15 @@ public class Flyingblur extends ApplicationAdapter {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
-		try {
-			gsm.render(batch);//отрисовывает верхний экран в стеке
+		} catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        }
+        try {
+			gsm.render(batch);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

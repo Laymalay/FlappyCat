@@ -1,15 +1,18 @@
 package com.mygdx.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Flyingblur;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.*;
-import java.util.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 /**
  * Created by alinka on 26.2.17.
  */
@@ -23,8 +26,10 @@ public class GameOver extends State {
     private ButtonForStates menu_button;
     private Vector3 touchPos;
     private Music lose,win;
+    protected ScoreList scores;
+    private PutObject send_to_server;
 
-    public GameOver(GameStateManager gsm, int newscore,int maxscore) throws IOException, ClassNotFoundException {
+    public GameOver(GameStateManager gsm, int newscore,int maxscore) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeyException, XmlPullParserException {
         super(gsm);
         background = new Texture("bg3.png");
         gameover = new Texture("gameover.png");
@@ -43,15 +48,20 @@ public class GameOver extends State {
             win.play();
         } else
             lose.play();
+        scores = LoadScores();
+        send_to_server = new PutObject(scores);
+        send_to_server.put();
+
+
     }
     @Override
-    protected void handleInput() throws IOException, ClassNotFoundException {
+    protected void handleInput() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeyException, XmlPullParserException {
         if(menu_button.Activated())
             gsm.set(new MenuState(gsm));
     }
 
     @Override
-    public void update(float dt) throws IOException, ClassNotFoundException {
+    public void update(float dt) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeyException, XmlPullParserException {
         handleInput();
         camera.update();
     }
@@ -94,11 +104,24 @@ public class GameOver extends State {
             list = (ScoreList) oin.readObject();
             oin.close();
         }
+
         list.add(score, Flyingblur.pLayer_name);
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(Gdx.files.local("score.out").file()));
         oos.writeObject(list);
         oos.flush();
         oos.close();
+    }
+    public ScoreList LoadScores()throws IOException, ClassNotFoundException{
+        FileHandle file = Gdx.files.local("score.out");
+        ScoreList list = new ScoreList();
+        InputStream is = file.read();
+        if (file.length() != 0){
+            ObjectInputStream oin = new ObjectInputStream(is);
+            list = (ScoreList) oin.readObject();
+            oin.close();
+        }
+        return list;
+
     }
 
     @Override
