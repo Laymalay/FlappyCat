@@ -43,7 +43,6 @@ public class MenuState extends State {
         font = new BitmapFont();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         font.getData().setScale(3);
-//        scores = LoadScores();
         getter_scores = new GetObject();
         scores = getter_scores.get();
         maxscore = scores.getmax().score;
@@ -115,17 +114,17 @@ public class MenuState extends State {
     }
 
 
-    public ScoreList LoadScores()throws IOException, ClassNotFoundException{
-        FileHandle file = Gdx.files.local("score.out");
-        ScoreList list = new ScoreList();
-        InputStream is = file.read();
-        if (file.length() != 0){
-            ObjectInputStream oin = new ObjectInputStream(is);
-            list = (ScoreList) oin.readObject();
-            oin.close();
-        }
-        return list;
-    }
+//    public ScoreList LoadScores()throws IOException, ClassNotFoundException{
+//        FileHandle file = Gdx.files.local("score.out");
+//        ScoreList list = new ScoreList();
+//        InputStream is = file.read();
+//        if (file.length() != 0){
+//            ObjectInputStream oin = new ObjectInputStream(is);
+//            list = (ScoreList) oin.readObject();
+//            oin.close();
+//        }
+//        return list;
+//    }
 
 
 

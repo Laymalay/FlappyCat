@@ -103,10 +103,9 @@ public class EasyPlay extends State{
     @Override
     public void update(float dt) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeyException, XmlPullParserException {
         handleInput();
-
         blur.update(dt);
         camera.position.x=blur.getPosition().x+80;
-        boolean b = false;
+        boolean gameover = false;
 
         for (int i=0; i< items.size; i++){
             Item item = items.get(i);
@@ -132,15 +131,15 @@ public class EasyPlay extends State{
             }
             if(rock.collides(blur.getBounds())){
                 blur.move();
-                b=true;
+                gameover=true;
                 break;
             }
         }
 
         if (blur.getLife() ==0){
-            b =true;
+            gameover =true;
         }
-        if (b){
+        if (gameover){
             gsm.set(new GameOver(gsm, blur.getScore(),maxscore));
         }
 

@@ -27,6 +27,7 @@ public abstract  class Item   {
     public Vector2 getPos() {
         return pos;
     }
+
     public void setPos (Vector2 v){pos=v;}
 
     public int getWidth(){
@@ -44,6 +45,7 @@ public abstract  class Item   {
 
     public void dispose (){
         texture.dispose();
+        sound.dispose();
 
     }
 
